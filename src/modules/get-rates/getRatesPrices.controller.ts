@@ -10,6 +10,6 @@ export class GetRatesController {
         @Query('inputCurrency') inputCurrency: string,
         @Query('outputCurrency') outputCurrency: string,
     ) {
-        return this.estimateService.findBestExchange(1, inputCurrency, outputCurrency);
+        return this.estimateService.findAllExchanges(inputCurrency, outputCurrency);
     }
 }

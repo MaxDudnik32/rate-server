@@ -22,8 +22,8 @@ type Rate = RateWithPool | RateWithoutPool;
 export class GetRatesService {
     constructor(private readonly rateProcessorService: ExchangeService) { }
 
-    async findBestExchange(inputAmount: number, inputCurrency: string, outputCurrency: string) {
-        const rates = await this.rateProcessorService.getAllRates(inputAmount, inputCurrency, outputCurrency);
+    async findAllExchanges(inputCurrency: string, outputCurrency: string) {
+        const rates = await this.rateProcessorService.getAllRates(1, inputCurrency, outputCurrency);
 
         const transformedRates = rates.map(rate => {
             const hasPool = (rate: Rate): rate is RateWithPool => 'pool' in rate;
