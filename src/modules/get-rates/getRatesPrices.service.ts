@@ -20,10 +20,10 @@ type Rate = RateWithPool | RateWithoutPool;
 
 @Injectable()
 export class GetRatesService {
-    constructor(private readonly rateProcessorService: ExchangeService) { }
+    constructor(private readonly exchangeService: ExchangeService) { }
 
     async findAllExchanges(inputCurrency: string, outputCurrency: string) {
-        const rates = await this.rateProcessorService.getAllRates(1, inputCurrency, outputCurrency);
+        const rates = await this.exchangeService.getAllRates(1, inputCurrency, outputCurrency);
 
         const transformedRates = rates.map(rate => {
             const hasPool = (rate: Rate): rate is RateWithPool => 'pool' in rate;
