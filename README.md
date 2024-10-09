@@ -1,85 +1,91 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+## **Description**
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This project is a cryptocurrency exchange rate comparison service designed to identify the best exchange rates across multiple platforms. The service supports Binance, KuCoin, and Uniswap (including both Uniswap V2 and V3) for trading ETH, BTC, and USDT. By utilizing the latest trading prices, the API offers two key endpoints:
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+- `/estimate` to find the most profitable exchange for a given trading pair and amount.
+- `/getRates` to retrieve the prices of a specific cryptocurrency pair across all supported exchanges.
 
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
 ## Project setup
 
 ```bash
 $ npm install
 ```
-
-## Compile and run the project
+Create a .env file in the root directory and add your PROVIDER_URL
 
 ```bash
-# development
+PROVIDER_URL=URL
+```
+
+Start the server
+
+```bash
 $ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
 ```
 
-## Run tests
+## API Endpoints
+### **/estimate**
 
-```bash
-# unit tests
-$ npm run test
+- **Description**: Determines the best exchange for converting a specified amount of cryptocurrency.
+- **Method**: `GET`
+- **Parameters**:
+  - `inputAmount` (number) — The amount of `inputCurrency` to exchange.
+  - `inputCurrency` (string) — The currency to be converted (e.g., "BTC").
+  - `outputCurrency` (string) — The target currency to receive (e.g., "USDT").
+- **Example Request**:
+  ```http
+  GET /estimate?inputAmount=0.5&inputCurrency=BTC&outputCurrency=USDT
+ - **Example Response**:
+   ```json
+   {
+      "exchangeName": "kucoin",
+      "outputAmount": 31123.2,
+      "rate": 62246.4
+    }
+### **/getRates**
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+- **Description**: Returns the rate of 1 baseCurrency in terms of quoteCurrency for all supported exchanges.
+- **Method**: `GET`
+- **Parameters**:
+  - `baseCurrency` (string) — The base currency (e.g., "BTC").
+  - `quoteCurrency` (string) — The quote currency (e.g., "ETH").
+- **Example Request**:
+  ```http
+  GET /getRates?inputCurrency=BTC&outputCurrency=ETH
+ - **Example Response**:
+   ```json
+   [
+      {
+        "exchangeName": "binance",
+        "rate": 25.5623721881391
+      },
+      {
+        "exchangeName": "kucoin",
+        "rate": 25.5689082076195
+      },
+      {
+        "exchangeName": "Uniswap V2",
+        "pool": "0xBb2b8038a1640196FbE3e38816F3e67Cba72D940",
+        "rate": 25.1380840223392
+      },
+      {
+        "exchangeName": "Uniswap V3",
+        "pool": "0xe6ff8b9A37B0fab776134636D9981Aa778c4e718",
+        "rate": 25.3948032635524
+      },
+      {
+        "exchangeName": "Uniswap V3",
+        "pool": "0x4585FE77225b41b697C938B018E2Ac67Ac5a20c0",
+        "rate": 25.4771395090129
+      },
+      {
+        "exchangeName": "Uniswap V3",
+        "pool": "0xCBCdF9626bC03E24f779434178A73a0B4bad62eD",
+        "rate": 25.3431039448235
+      },
+      {
+        "exchangeName": "Uniswap V3",
+        "pool": "0x6Ab3bba2F41e7eAA262fa5A1A9b3932fA161526F",
+        "rate": 20.2488537271726
+      }
+    ]
